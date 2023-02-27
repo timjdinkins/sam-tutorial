@@ -1,25 +1,33 @@
-import {
-  getTargetFromSplit,
-  randNum,
-} from "../../../src/lib/services/splitTest.mjs";
-import { getSplitTest } from "../../../src/lib/services/splitTestStore.mjs";
+import { getSplitTestService } from "../../../src/lib/services/splitTest.mjs";
 
-describe("Test the Split", function () {
-  // This test invokes putItemHandler() and compare the result
-  it("should do a split test", async () => {
+const store = {
+  getSplitTest(_id) {
+    return {
+      name: "Test1",
+      targets: [
+        { pct: 70, target: "http://fu.com/1" },
+        { pct: 30, target: "http://fu.com/2" },
+      ],
+    };
+  },
+};
+
+describe("Test the Split Tester", function () {
+  it("should select the first target", async () => {
     const id = "abc-123";
-    const ts = [
-      { pct: 70, target: "http://test.com/fu" },
-      { pct: 30, target: "http://test.com/fum" },
-    ];
-    const splitTest = { id, name: "test", targets: ts };
+    const service = getSplitTestService(store);
 
-    // need to mock getSpitTest
-    // need to mock randNum
+    const target = await service.getTargetFromSplit(id, 1);
+    const expectedResult = "http://fu.com/1";
+    expect(target).toEqual(expectedResult);
+  });
 
-    const result = await getTargetFromSplit(id);
+  it("should select the second target", async () => {
+    const id = "abc-123";
+    const service = getSplitTestService(store);
 
-    const expectedResult = ts[0];
-    expect(result).toEqual(expectedResult);
+    const target = await service.getTargetFromSplit(id, 75);
+    const expectedResult = "http://fu.com/2";
+    expect(target).toEqual(expectedResult);
   });
 });

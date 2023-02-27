@@ -1,10 +1,15 @@
-import { create, getSplitTest } from "./splitTestStore.mjs";
-
 const MAX_PCT = 99;
+let store = undefined;
 
-export const getTargetFromSplit = async (id) => {
-  const st = await getSplitTest(id);
-  rand = randNum();
+const split = async (id) => {
+  const rand = Math.floor(Math.random() * MAX_PCT) + 1;
+  const t = await getTargetFromSplit(id, rand);
+  return t;
+};
+
+const getTargetFromSplit = async (id, rand) => {
+  const st = await store.getSplitTest(id);
+  let sum = 0;
   const targetMap = st.targets
     .map((item) => {
       return { pct: parseInt(item.pct), target: item.target };
@@ -12,7 +17,6 @@ export const getTargetFromSplit = async (id) => {
     .sort((a, b) => {
       return a < b ? -1 : 1;
     });
-  sum = 0;
   const target = targetMap.find((t) => {
     sum += t.pct;
     return sum >= rand;
@@ -20,12 +24,17 @@ export const getTargetFromSplit = async (id) => {
   return target.target;
 };
 
-export const createSplitTest = async (params) => {
+const create = async (params) => {
   // probably do some validation...
-  const st = await create(params);
+  const st = await store.create(params);
   return st;
 };
 
-export const randNum = () => {
-  return Math.floor(Math.random() * MAX_PCT) + 1;
+export const getSplitTestService = (_store) => {
+  store = _store;
+  return {
+    split,
+    getTargetFromSplit,
+    create,
+  };
 };

@@ -43,7 +43,7 @@ export const create = async (params) => {
   return ddbParams.Item;
 };
 
-export const getSplitTest = async (id) => {
+export const get = async (id) => {
   const params = {
     TableName: TABLE_NAME,
     Key: {

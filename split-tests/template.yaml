@@ -51,7 +51,7 @@ Resources:
       Handler: split.handler
       Policies:
         # Give Create/Read/Update/Delete Permissions to the SampleTable
-        - DynamoDBCrudPolicy:
+        - DynamoDBReadPolicy:
             TableName: !Ref SplitTestsTable
       Environment:
         Variables:
