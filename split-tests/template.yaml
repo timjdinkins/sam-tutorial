@@ -40,7 +40,7 @@ Resources:
         Minify: true
         Sourcemap: true
         EntryPoints:
-          - src/handlers/create.mjs
+          - src/handlers/create.ts
 
   SplitAndRedirect:
     Type: AWS::Serverless::Function
@@ -68,7 +68,7 @@ Resources:
         Minify: true
         Sourcemap: true
         EntryPoints:
-          - src/handlers/split.mjs
+          - src/handlers/split.ts
 
   SplitTestsTable:
     Type: AWS::DynamoDB::Table

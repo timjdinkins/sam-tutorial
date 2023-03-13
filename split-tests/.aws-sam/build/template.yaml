@@ -37,7 +37,7 @@ Resources:
       BuildMethod: esbuild
       BuildProperties:
         EntryPoints:
-        - src/handlers/create.mjs
+        - src/handlers/create.ts
         Minify: true
         Sourcemap: true
       SamResourceId: CreateSplitTest
@@ -50,7 +50,7 @@ Resources:
       CodeUri: SplitAndRedirect
       Handler: split.handler
       Policies:
-      - DynamoDBCrudPolicy:
+      - DynamoDBReadPolicy:
           TableName:
             Ref: SplitTestsTable
       Environment:
@@ -68,7 +68,7 @@ Resources:
       BuildMethod: esbuild
       BuildProperties:
         EntryPoints:
-        - src/handlers/split.mjs
+        - src/handlers/split.ts
         Minify: true
         Sourcemap: true
       SamResourceId: SplitAndRedirect
